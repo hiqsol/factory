@@ -2,53 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Factory\Definitions;
+namespace Yiisoft\Factory\Normalizers;
 
 use Yiisoft\Factory\Exceptions\InvalidConfigException;
+use League\Container\Definition\DefinitionInterface;
+use Yiisoft\Factory\Definitions\ArrayDefinition;
+use Yiisoft\Factory\Definitions\Reference;
+use Yiisoft\Factory\Definitions\CallableDefinition;
+use Yiisoft\Factory\Definitions\ValueDefinition;
 
 /**
- * Class Definition represents a definition in a container
+ * Simple normalizer allows any definitions including definition objects and any scalars.
  */
-class Normalizer
+class SimpleNormalizer implements NormalizerInterface
 {
-    /**
-     * Definition may be defined multiple ways.
-     * Interface name as string:
-     *
-     * ```php
-     * $container->set('interface_name', EngineInterface::class);
-     * ```
-     *
-     * A closure:
-     *
-     * ```php
-     * $container->set('closure', function($container) {
-     *     return new MyClass($container->get('db'));
-     * });
-     * ```
-     *
-     * A callable array:
-     *
-     * ```php
-     * $container->set('static_call', [MyClass::class, 'create']);
-     * ```
-     *
-     * A definition array:
-     *
-     * ```php
-     * $container->set('full_definition', [
-     *     '__class' => EngineMarkOne::class,
-     *     '__construct()' => [42],
-     *     'argName' => 'value',
-     *     'setX()' => [42],
-     * ]);
-     * ```
-     *
-     * @param mixed $definition
-     * @param string $id
-     * @param array $params
-     * @throws InvalidConfigException
-     */
     public static function normalize($definition, string $id = null, array $params = []): DefinitionInterface
     {
         if ($definition instanceof DefinitionInterface) {
